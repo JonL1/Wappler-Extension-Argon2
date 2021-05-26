@@ -1,0 +1,56 @@
+[
+  {
+    type: 'argon2_hash',
+    module : 'argon2',
+    action : 'hash',
+    groupTitle : 'Password',
+    groupIcon : 'fal fa-lg fal fa-key comp-security',
+    title : 'Argon2 Hash @@var(name)@@',
+    icon : 'fal fa-lg fa-key comp-security',
+    dataPickObject: true,
+    properties : [
+      {
+        group: 'Password Hash Options',
+        variables: [
+          { name: 'name', optionName: 'name', title: 'Name', type: 'text', required: true, defaultValue: '', help: 'This will be the name for the output key and the tag used in the expression builder'},   
+          { name: 'password', optionName:'password', title: 'Password', type: 'text', required: true, defaultValue :'', serverDataBindings: true,  help: 'The password you want to hash'},
+          { name: 'hashLength', optionName:'hashLength', title: 'Length', type: 'number', required: true, defaultValue :'32', serverDataBindings: false,  help: 'The hash length is the length of the hash function output in bytes.</br> Note that the resulting hash is encoded with Base 64, so the digest will be ~1/3 longer.</br> The default value is 32, which produces raw hashes of 32 bytes or digests of 43 characters.'},
+          { name: 'timeCost', optionName:'timeCost', title: 'Time Cost', type: 'number', required: true, defaultValue :'3', serverDataBindings: false,  help: 'The time cost is the amount of passes (iterations) used by the hash function.</br> It increases hash strength at the cost of time required to compute.</br> The default value is 3.'},
+          { name: 'memoryCost', optionName:'memoryCost', title: 'Memory Cost', type: 'number', required: true, defaultValue :'4096', serverDataBindings: false,  help: 'The amount of memory to be used by the hash function, in KiB. Each thread (see parallelism) will have a memory pool of this size.</br> Note that large values for highly concurrent usage will cause starvation and thrashing if your system memory gets full.</br> The default value is 4096, meaning a pool of 4 MiB per thread.'},
+          { name: 'parallelism', optionName:'parallelism', title: 'Parallelism', type: 'number', required: true, defaultValue :'1', serverDataBindings: false,  help: 'The amount of threads to compute the hash on. Each thread has a memory pool with memoryCost size.</br> Note that changing it also changes the resulting hash.</br> The default value is 1, meaning a single thread is used.'}, 
+          { name: 'method', optionName: 'method', title: 'Method', 
+            type: 'droplist', 
+            values: [
+              {title: 'Argon2d', value: 'argon2d', show:[], hide:[] },
+              {title: 'Argon2i', value: 'argon2i', show:[], hide:[] },
+              {title: 'Argon2id', value: 'argon2id', show:[], hide:[] },    
+            ], defaultValue: 'argon2i',
+            help: 'The variant of the hash function. Argon2 has several variants with different aims:</br> 1) argon2d is faster and highly resistant against GPU attacks, which is useful for cryptocurrency</br> 2) argon2i is slower and resistant against tradeoff attacks, which is preferred for password hashing and key derivation</br> 3) argon2id is a hybrid combination of the above, being resistant against GPU and tradeoff attacks.</br> The default is argon2i, and the types are available as attributes of the module.'
+          },  
+          { name: 'output', optionName: 'output', title: 'Output', type: 'boolean', defaultValue: false }     
+        ]
+      }
+    ]
+  },
+  {
+    type: 'argon2_verify',
+    module : 'argon2',
+    action : 'verify',
+    groupTitle : 'Password',
+    groupIcon : 'fal fa-lg fal fa-key comp-security',
+    title : 'Argon2 Verify @@var(name)@@',
+    icon : 'fal fa-lg fa-key comp-security',
+    dataPickObject: true,
+    properties : [
+      {
+        group: 'Password Verify Options',
+        variables: [
+          { name: 'name', optionName: 'name', title: 'Name', type: 'text', required: true, defaultValue: '', help: 'This will be the name for the output key and the tag used in the expression builder'},
+          { name: 'password', optionName:'password', title: 'Password', type: 'text', required: true, defaultValue :'', serverDataBindings: true, help: 'The password you want to verify'},      
+          { name: 'hash', optionName:'hash', title: 'hash', type: 'text', required: true, defaultValue :'', serverDataBindings: true, help: 'The hash you want to verify the password against'},
+          { name: 'output', optionName: 'output', title: 'Output', type: 'boolean', defaultValue: false } 
+        ]
+      }
+    ]
+  },
+]
